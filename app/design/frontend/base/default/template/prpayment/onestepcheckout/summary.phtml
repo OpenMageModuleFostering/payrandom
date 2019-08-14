@@ -9,7 +9,6 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
     $item = Mage::getSingleton('checkout/session')->getQuote()->getAllItems();
     $item = $item[0];
     $productId = $item->getProduct()->getId();//getProductId();
-    
     $dealProduct = Mage::getModel('prpayment/dealproduct')->loadByProductId($productId);
     $deal = Mage::getModel('prpayment/deal')->load($dealProduct->getDealId());
 
@@ -101,7 +100,6 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
     <?php if(!$total->getTitle()){continue;}?>
         <?php
         $fullInfo = $total->getFullInfo();
-
         if(!empty($fullInfo) && $checkoutHelper->settings['display_full_tax']):
             foreach ($fullInfo as $info):
                 $rates = current($info['rates']);
@@ -118,7 +116,6 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
 
             $code = $total->getCode();
             $value = $total->getValue();
-
             if($code == 'subtotal')    {
                 $total_name = $this->__('Subtotal');
                 $SubtotalValue = $value;
@@ -133,6 +130,29 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
             elseif($code == 'grand_total')    {
                 $total_name = $this->__('Grand total');
             }
+            elseif($code == 'tax')    {
+              $total_name = $total->getTitle();
+
+              $total = $this->getQuote()->getGrandTotal();
+              $shipping = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingInclTax();
+              foreach ($fullInfo as $info) {
+                $rates = current($info['rates']);
+                $percent = $rates['percent'];
+              }
+
+              $_max_price_with_tax = ((1 - $minimumDiscount) * ($total - $shipping));
+              $_max_price_without_tax = $_max_price_with_tax / (1 + ($percent / 100));
+              $max_tax = $_max_price_with_tax - $_max_price_without_tax;
+
+              $_min_price_with_tax = ((1 - $maximumDiscount) * ($total - $shipping));
+              $_min_price_without_tax = $_min_price_with_tax / (1 + ($percent / 100));
+              $min_tax = $_min_price_with_tax - $_min_price_without_tax;
+
+              $_fixed_price_with_tax = ((1 - $fixedDiscount) * ($total - $shipping));
+              $_fixed_price_without_tax = $_fixed_price_with_tax / (1 + ($percent / 100));
+              $fixed_price = $_fixed_price_with_tax - $_fixed_price_without_tax;
+
+            }
             else    {
                 $total_name = $total->getTitle();
             }
@@ -146,14 +166,25 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
             <?php if($code == 'grand_total'){ ?>
               <span class="prpayment-interval-price">
                 <?php 
-                    echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $maximumDiscount) * $SubtotalValue + $ShippingValue) . ' ' . $this->__('a') . ' ' .
-                    $this->helper('checkout')->formatPrice((1 - $minimumDiscount) * $SubtotalValue + $ShippingValue);
+                    echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $maximumDiscount) * ($value - $ShippingValue)+ $ShippingValue) . ' ' . $this->__('a') . ' ' .
+                    $this->helper('checkout')->formatPrice((1 - $minimumDiscount) * ($value - $ShippingValue) + $ShippingValue);
                 ?>
               </span>
               <span class="prpayment-fixed-price" style="display:none;">
-                <?php echo $this->helper('checkout')->formatPrice((1 - $fixedDiscount) * $SubtotalValue + $ShippingValue); ?>
+                <?php echo $this->helper('checkout')->formatPrice((1 - $fixedDiscount) * ($value - $ShippingValue) + $ShippingValue); ?>
               </span>
-            <?php } else{ ?>
+            <?php } elseif($code == 'tax'){ ?>
+              <span class="prpayment-interval-price">
+              <?php 
+                echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice($min_tax) . ' ' .
+                $this->__('a') . ' ' .
+                $this->helper('checkout')->formatPrice($max_tax);
+              ?>
+              </span>
+              <span class="prpayment-fixed-price" style="display:none;">
+                <?php echo $this->helper('checkout')->formatPrice($fixed_price); ?>
+              </span>
+            <?php } else {?>
               <span class="prpayment-interval-price">
               <?php 
                   echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $maximumDiscount) * $value) . ' ' . $this->__('a') . ' ' .
@@ -164,7 +195,6 @@ if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
                 <?php echo $this->helper('checkout')->formatPrice((1 - $fixedDiscount) * $value); ?>
               </span>
             <?php } ?>
-
             <?php }else{ ?>
                 <?php echo $this->helper('checkout')->formatPrice($value); ?>
             <?php } ?>

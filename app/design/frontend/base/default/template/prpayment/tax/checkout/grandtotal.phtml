@@ -23,17 +23,17 @@
 <?php
     $subTotal = Mage::getModel('checkout/cart')->getQuote()->getSubtotal();
     $difTotal = $this->getTotal()->getValue() - $subTotal;
+    $shipping = $this->getTotal()->getAddress()->getShippingInclTax();
+    $subTotal = $this->getTotal()->getValue() - $shipping;
 ?>
 <tr>
     <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
         <strong><?php echo $this->getTotal()->getTitle() ?></strong>
-
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
-        <strong><?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $subTotal + $difTotal) . ' ' . $this->__('a') . ' ' .
-            $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $subTotal + $difTotal) ?>
-
-        </strong>
+      <strong>
+        <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $subTotal + $shipping) . ' ' . $this->__('a') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $subTotal + $shipping) ?>
+      </strong>
     </td>
 </tr>
 <?php endif;?>

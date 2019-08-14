@@ -49,7 +49,7 @@ function updateDiffDiscountsFromDeals(redrawRoulette){
 			text = '+' + value;
 		}
 		if(value == -100){
-			$('result-deal-' + i).update('GRATIS');
+			$('result-deal-' + i).update(jsTranslate.freeText.toUpperCase());
 		}else{
 			$('result-deal-' + i).update(text + '%');
 		}

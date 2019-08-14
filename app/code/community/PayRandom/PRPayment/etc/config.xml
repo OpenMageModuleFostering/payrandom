@@ -106,6 +106,7 @@
 				<rewrite>
 					<checkout_grandtotal>PayRandom_PRPayment_Block_Tax_Checkout_Grandtotal</checkout_grandtotal>
 					<checkout_subtotal>PayRandom_PRPayment_Block_Tax_Checkout_Subtotal</checkout_subtotal>
+					<checkout_tax>PayRandom_PRPayment_Block_Tax_Checkout_Tax</checkout_tax>
 				</rewrite>
 			</tax>
 			<prpayment>
