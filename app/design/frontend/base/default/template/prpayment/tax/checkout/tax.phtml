@@ -55,6 +55,10 @@
         <?php $_min_price_without_tax = $_min_price_with_tax / (1 + ($percent / 100));?>
         <?php $min_tax = $_min_price_with_tax - $_min_price_without_tax; ?>
 
+        <?php $_fixed_price_with_tax = ((1 - $cartDeal->getFixedDiscount()) * ($total - $shipping));?>
+        <?php $_fixed_price_without_tax = $_fixed_price_with_tax / (1 + ($percent / 100));?>
+        <?php $fixed_tax = $_fixed_price_with_tax - $_fixed_price_without_tax; ?>
+
         <?php foreach ($rates as $rate): ?>
         <tr class="summary-details-<?php echo $taxIter; ?> summary-details<?php if ($isTop): echo ' summary-details-first'; endif; ?>" style="display:none;">
             <td class="a-right" style="<?php echo $_style ?>" colspan="<?php echo $this->getColspan(); ?>">
@@ -66,9 +70,14 @@
             </td>
             <?php if ($isFirst): ?>
                 <td style="<?php echo $_style ?>" class="a-right" rowspan="<?php echo count($rates); ?>">
+                  <span class="prpayment-interval-price">
                     <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice($min_tax); ?>
                     <?php echo $this->__('a'); ?>
                     <?php echo $this->helper('checkout')->formatPrice($max_tax); ?>
+                  </span>
+                  <span class="prpayment-fixed-price" style="display:none;">
+                    <?php echo $this->helper('checkout')->formatPrice($fixed_tax); ?>
+                  </span>
                 </td>
             <?php endif; ?>
         </tr>
@@ -87,8 +96,13 @@
         <?php endif;?>
     </td>
     <td style="<?php echo $_style ?>" class="a-right">
-      <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice($min_tax); ?>
-      <?php echo $this->__('a'); ?>
-      <?php echo $this->helper('checkout')->formatPrice($max_tax); ?>
+      <span class="prpayment-interval-price">
+        <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice($min_tax); ?>
+        <?php echo $this->__('a'); ?>
+        <?php echo $this->helper('checkout')->formatPrice($max_tax); ?>
+      </span>
+      <span class="prpayment-fixed-price" style="display:none;">
+        <?php echo $this->helper('checkout')->formatPrice($fixed_tax); ?>
+      </span>
     </td>
 </tr>

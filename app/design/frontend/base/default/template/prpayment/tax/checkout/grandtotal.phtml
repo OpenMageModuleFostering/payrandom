@@ -31,9 +31,16 @@
         <strong><?php echo $this->getTotal()->getTitle() ?></strong>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
-      <strong>
-        <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $subTotal + $shipping) . ' ' . $this->__('a') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $subTotal + $shipping) ?>
-      </strong>
+      <span class="prpayment-interval-price">
+        <strong>
+          <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $subTotal + $shipping) . ' ' . $this->__('a') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $subTotal + $shipping) ?>
+        </strong>
+      </span>
+      <span class="prpayment-fixed-price" style="display:none;">
+        <strong>
+          <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getFixedDiscount()) * $subTotal + $shipping); ?>
+        </strong>
+      </span>
     </td>
 </tr>
 <?php endif;?>

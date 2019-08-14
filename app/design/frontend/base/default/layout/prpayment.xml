@@ -11,37 +11,8 @@
 				<name>css/prpayment/prpayment.css</name>
 			</action>
 		</reference>
-	</default>
+  </default>
 
-	<catalog_category_default>
-		<reference name="product_list">
-			<action method="setTemplate">
-				<template>prpayment/catalog/product/list.phtml</template>
-			</action>
-		</reference>
-	</catalog_category_default>
-	<catalog_category_layered>
-		<reference name="product_list">
-			<action method="setTemplate">
-				<template>prpayment/catalog/product/list.phtml</template>
-			</action>
-		</reference>
-	</catalog_category_layered>
-	<catalogsearch_result_index>
-		<reference name="search_result_list">
-			<action method="setTemplate">
-				<template>prpayment/catalog/product/list.phtml</template>
-			</action>
-		</reference>
-	</catalogsearch_result_index>
-
-	<catalogsearch_advanced_result>
-		<reference name="search_result_list">
-			<action method="setTemplate">
-				<template>prpayment/catalog/product/list.phtml</template>
-			</action>
-		</reference>
-	</catalogsearch_advanced_result>
 	<PRODUCT_TYPE_simple>
 		<reference name="product.info.simple">
 			<action method="setTemplate">

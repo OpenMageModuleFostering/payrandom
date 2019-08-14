@@ -7,9 +7,14 @@
         <?php echo $this->helper('tax')->__('Subtotal (Excl. Tax)') ?>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
+      <span class="prpayment-interval-price">
         <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $this->getTotal()->getValueExclTax()) ?>
         <?php echo $this->__('a'); ?>
         <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $this->getTotal()->getValueExclTax()) ?>
+      </span>
+      <span class="prpayment-fixed-price" style="display:none;">
+        <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getFixedDiscount()) * $this->getTotal()->getValueExclTax()) ?>
+      </span>
     </td>
 </tr>
 <tr>
@@ -17,9 +22,14 @@
         <?php echo $this->helper('tax')->__('Subtotal (Incl. Tax)') ?>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
+      <span class="prpayment-interval-price">
         <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $this->getTotal()->getValueInclTax()) ?>
         <?php echo $this->__('a'); ?>
         <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $this->getTotal()->getValueInclTax()) ?>
+      </span>
+      <span class="prpayment-fixed-price" style="display:none;">
+        <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getFixedDiscount()) * $this->getTotal()->getValueInclTax()) ?>
+      </span>
     </td>
 </tr>
 <?php else : ?>
@@ -28,9 +38,14 @@
         <?php echo $this->getTotal()->getTitle() ?>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
+      <span class="prpayment-interval-price">
         <?php echo $this->__('de') . ' ' . $this->helper('checkout')->formatPrice((1 - $cartDeal->getMaximumDiscount()) * $this->getTotal()->getValue()) ?>
         <?php echo $this->__('a'); ?>
         <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getMinimumDiscount()) * $this->getTotal()->getValue()) ?>
+      </span>
+      <span class="prpayment-fixed-price" style="display:none;">
+        <?php echo $this->helper('checkout')->formatPrice((1 - $cartDeal->getFixedDiscount()) * $this->getTotal()->getValue()) ?>
+      </span>
     </td>
 </tr>
 <?php endif;?>
