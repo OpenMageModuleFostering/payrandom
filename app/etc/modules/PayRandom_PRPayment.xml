@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @category    PayRandom
+* @package     PayRandom_PRPayment
+* @copyright   Copyright (c) 2013 PayRandom (http://www.payrandom.com)
+*/
+-->
+<config>
+    <modules>
+        <PayRandom_PRPayment>
+            <active>true</active>
+            <codePool>community</codePool>
+        </PayRandom_PRPayment>
+    </modules>
+</config>

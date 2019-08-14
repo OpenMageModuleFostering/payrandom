@@ -1,0 +1,180 @@
+<?php $dealProduct = PayRandom_PRPayment_Helper_Data::getCartProductDeal(); ?>
+<?php $_id = $dealProduct->getProductId(); ?>
+<?php $product = Mage::getModel('catalog/product')->load($_id); ?>
+<?php $deal = Mage::getModel('prpayment/deal')->load($dealProduct->getDealId()); ?>
+<?php $_discounts = json_decode($deal->getDiscounts(), true); ?>
+<?php $_taxHelper  = $this->helper('tax'); ?>
+<?php $_price = $_taxHelper->getPrice($product, $product->getPrice()); ?>
+
+<div class="cart">
+    <div class="page-title title-buttons">
+        <h1><?php echo $this->__('Shopping Cart') ?></h1>
+        <?php if(!$this->hasError()): ?>
+        <ul class="checkout-types">
+        <?php foreach ($this->getMethods('top_methods') as $method): ?>
+            <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+            <li><?php echo $methodHtml; ?></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+    </div>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+    <div class="payrandom-information">
+        <div class="payrandom-information-img">
+            <div class="payrandom-information-content">
+                <div class="payrandom-information-content-right">
+                    <a href="#" class="payrandom-price-full-left-element" onclick="prPaymentOpenHelp(<?php echo $_id ?>); return false;">
+                      <?php echo $this->__('Más información');?>
+                    </a>
+                </div>
+                <?php echo $this->__('Continua con el proceso de compra y al final jugarás el precio con <strong>PayRandom</strong>');?>
+            </div>
+        </div>
+    </div>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <col width="1" />
+                <col />
+                <col width="1" />
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                <col width="1" />
+            <?php endif ?>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+                        <th rowspan="<?php echo $mergedCells; ?>">&nbsp;</th>
+                        <th rowspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                        <th rowspan="<?php echo $mergedCells; ?>"></th>
+                        <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><span class="nobr"><?php echo $this->__('Move to Wishlist') ?></span></th>
+                        <?php endif ?>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Unit Price') ?></span> <br/><img src="<?php echo $this->getSkinUrl('images/prpayment/help.png');?>" alt="PayRandom" /></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Subtotal') ?>
+                            <br/><img src="<?php echo $this->getSkinUrl('images/prpayment/help.png');?>" alt="PayRandom" /></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center">&nbsp;</th>
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="50" class="a-right">
+                            <?php if($this->getContinueShoppingUrl()): ?>
+                                <button type="button" title="<?php echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php echo $this->getContinueShoppingUrl() ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+                            <?php endif; ?>
+                            <button type="submit" name="update_cart_action" value="update_qty" title="<?php echo $this->__('Update Shopping Cart'); ?>" class="button btn-update"><span><span><?php echo $this->__('Update Shopping Cart'); ?></span></span></button>
+                            <button type="submit" name="update_cart_action" value="empty_cart" title="<?php echo $this->__('Clear Shopping Cart'); ?>" class="button btn-empty" id="empty_cart_button"><span><span><?php echo $this->__('Clear Shopping Cart'); ?></span></span></button>
+                            <!--[if lt IE 8]>
+                            <input type="hidden" id="update_cart_action_container" />
+                            <script type="text/javascript">
+                            //<![CDATA[
+                                Event.observe(window, 'load', function()
+                                {
+                                    // Internet Explorer (lt 8) does not support value attribute in button elements
+                                    $emptyCartButton = $('empty_cart_button');
+                                    $cartActionContainer = $('update_cart_action_container');
+                                    if ($emptyCartButton && $cartActionContainer) {
+                                        Event.observe($emptyCartButton, 'click', function()
+                                        {
+                                            $emptyCartButton.setAttribute('name', 'update_cart_action_temp');
+                                            $cartActionContainer.setAttribute('name', 'update_cart_action');
+                                            $cartActionContainer.setValue('empty_cart');
+                                        });
+                                    }
+
+                                });
+                            //]]>
+                            </script>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </fieldset>
+    </form>
+    <div class="cart-collaterals">
+        <div class="col2-set">
+            <div class="col-1">
+                <?php echo $this->getChildHtml('crosssell') ?>
+            </div>
+            <div class="col-2">
+                <?php /* Extensions placeholder */ ?>
+                <?php echo $this->getChildHtml('checkout.cart.extra') ?>
+                <?php echo $this->getChildHtml('coupon') ?>
+                <?php if (!$this->getIsVirtual()): echo $this->getChildHtml('shipping'); endif; ?>
+            </div>
+        </div>
+        <div class="totals">
+            <?php echo $this->getChildHtml('totals'); ?>
+            <?php if(!$this->hasError()): ?>
+            <ul class="checkout-types">
+            <?php foreach ($this->getMethods('methods') as $method): ?>
+                <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                <li><?php echo $methodHtml; ?></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<div id="payrandom-modalbox-info-<?php echo $_id ?>" class="payrandom-modalbox" style="display:none;">
+    <div class="payrandom-modalbox-header">
+        <img src="<?php echo $this->getSkinUrl('images/prpayment/logo_pr_white_small.png');?>" alt="PayRandom" />
+        <a href="#" onclick="prPaymentCloseHelp(<?php echo $_id;?>); return false;" id="payrandom-modalbox-close" class="payrandom-modalbox-close"><img src="<?php echo $this->getSkinUrl('images/prpayment/modalbox/close.png');?>" alt="close" /></a>
+    </div>
+    <div class="payrandom-modalbox-content">
+        <div id="payrandom-maincontent-<?php echo $_id;?>" class="payrandom-modalbox-content-maincontent">
+            <div class="payrandom-modalbox-content-divimg">
+                <img src="<?php echo PayRandom_PRPayment_Helper_Data_Api::getRouletteImg($_discounts, $_price, $this->__('Free'), 250, 250);?>" alt="Roulette" />
+            </div>
+
+            <h2 class="payrandom-modalbox-h2"><?php echo $this->__('Compra y juega con PayRandom') ?></h2>
+            <p><?php echo $this->__('¡Consigue este producto por uno de los precios que vés en la ruleta!') ?></p>
+            <p><span class="payrandom-modalbox-howitworks"><?php echo $this->__('Cómo funciona') ?>:</span></p>
+            <a href="#" onclick="$('payrandom-maincontent-<?php echo $_id;?>').hide();$('payrandom-video-<?php echo $_id;?>').show(); return false;" target="_blank"><img src="<?php echo $this->getSkinUrl('images/prpayment/modalbox/video.png');?>" alt="help" /></a>
+        </div>
+        <div id="payrandom-video-<?php echo $_id;?>" class="payrandom-modalbox-content-video" style="display: none;">
+            <iframe id="how-it-works" src="//player.vimeo.com/video/91405153" width="465" height="260" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    document.observe('dom:loaded', function() { 
+      $("payrandom-modalbox-close").on("click", function (e) {
+        $('how-it-works').setAttribute('src','');
+        $('how-it-works').setAttribute('src','//player.vimeo.com/video/91405153');
+      });
+    });
+</script>

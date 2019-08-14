@@ -1,0 +1,98 @@
+.prpayment-design-box {
+	border: 1px solid #dcdcdc;
+	background-color: #fafafa;
+	min-height: 600px;
+	padding: 30px;
+	color: #656c72;
+}
+
+.prpayment-design-box-left {
+	min-height: 600px;
+	padding-right: 20px;
+	float: left;
+	width: 40%;
+}
+
+.prpayment-design-box-right {
+	width: 53%;
+	float: left;
+	padding: 0 20px;
+	border-left: 1px solid #dcdcdc;
+}
+
+.prpayment-design-element {
+	margin-bottom: 20px;
+}
+
+.prpayment-design-group {
+	margin-bottom: 20px;
+}
+
+.prpayment-design-deal-header{
+	text-align: center;
+	width: 24%;
+}
+.prpayment-design-deal{
+	margin: 0 10px;
+	width: 90%;
+	text-align: right;
+}
+
+.prpayment-design-deal-result {
+	text-align: center;
+}
+
+.prpayment-design-deal-red{
+	color: #fc8d8e;
+}
+
+.prpayment-design-deal-green{
+	color: #8fcb9f;
+}
+
+.prpayment-design-box-bigimage {
+	text-align: center;
+}
+
+.prpayment-design-box-bottom{
+	background-color: #fff;
+	border: 1px solid #dcdcdc;
+	padding: 20px 40px;
+	margin-bottom: 10px;
+}
+
+.prpayment-design-box-bottom th {
+	color: #EB5E00;
+	text-align: center;
+}
+
+.prpayment-design-box-bottom td {
+	text-align: center;
+}
+
+.prpayment-design-recaluclate {
+	text-align: center;
+	line-height: 300px;
+	min-height: 600px;
+}
+
+.prpayment-design-loading {
+	background-color: #EAE2CA;
+    border: 3px solid #DFD7BA;
+    color: #611B06;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 85px;
+    text-align: center;
+}
+
+.prpayment-slider-handle {
+	width: 21px;
+	height: 21px;
+	background-image: url('../../../../default/default/images/prpayment/slider-handler-shadow.png');
+	cursor: col-resize;
+}
+
+#predefinedDealsGridInfo_table input{
+  display: none;
+}

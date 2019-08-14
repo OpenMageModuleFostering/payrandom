@@ -1,0 +1,258 @@
+<?php
+	$_price = $this->getProduct()->getPrice();
+	$_deal = $this->getDeal();
+	$_discounts = json_decode($_deal->getDiscounts(), true);
+	$_product = $this->getProduct();
+	$_productId = $this->getProduct()->getId();
+	$_fixed_discount = $_deal->getFixedDiscount();
+?>
+<div class="content-header">
+    <h3 class="icon-head head-system-account">PayRandom - <?php echo ($_deal->getId() == 0?$this->__('Nueva ruleta'):$_deal->getName());?></h3>
+    <div style="float: right;">
+	    <button style="" onclick="window.location='<?php echo Mage::helper('adminhtml')->getUrl("/catalog_product/index");?>'" class="scalable back" type="button" title="<?php echo $this->__('Back');?>"<span><span><span><?php echo $this->__('Back');?></span></span></span></button>
+	    <button style="" onclick="if(designForm.validate()){ designForm.submit();} " class="scalable save" type="button" title="<?php echo $this->__('Guardar y asignar');?>"><span><span><span><?php echo $this->__('Guardar y asignar');?></span></span></span></button>
+    </div>
+</div>
+<div class="entry-edit">
+	<p>
+ 		<strong><?php echo $this->__('Producto');?>:</strong> <?php echo $this->getProduct()->getName();?>
+    	<strong style="margin-left: 40px;"><?php echo $this->__('Precio original');?>:</strong> <?php echo $this->helper('checkout')->formatPrice($_price);?>
+    </p>
+    <form name="form_design" id="form_design" method="get" action="<?php echo $this->getUrl('*/deals/save');?>">
+	    <div class="prpayment-design-box">
+	    	<div class="prpayment-design-box-left">
+	    		<div class="prpayment-design-group">
+	    			<div class="prpayment-design-element">
+			    		<strong>1 . <?php echo $this->__('Ponle nombre a la ruleta'); ?></strong>
+			    		<br/>
+			    		<input class="required-entry" type="text" id="name" value="<?php echo htmlspecialchars($_deal->getName());?>" name="deal_name" />
+			    	</div>
+		    	</div>
+		    	<div class="prpayment-design-element">
+		    		<div class="prpayment-design-element">
+	    				<strong>2 . <?php echo $this->__('Configura la ruleta'); ?></strong>
+	    			</div>
+	    			<div class="prpayment-design-element">
+	    				<strong><?php echo $this->__('Precio medio'); ?>:</strong>
+		    			<input class="required-entry validate-greater-than-zero" type="text" id="avg_price" value="<?php echo $this->getAvgPrice();?>" name="avg_price" />
+		    		</div>
+            <div class="prpayment-design-element" style="position:relative;">
+              <strong><?php echo $this->__('Atracción'); ?>:</strong>
+              <br/>
+              <div style="width: 350px; background-color: #ccc; height: 4px; margin: 20px 0px 7px 0px;">
+              
+              <div id="sliderAttraction" style="float: left; background-color: red; height: 4px;">
+                <div id="trackAttraction" style="width: 350px; height: 20px; position: absolute;">
+                  <div id="handleAttraction" style="top: -8px; position: absolute;" class="prpayment-slider-handle"></div>
+                </div>
+              </div>
+            </div>
+
+            <script type="text/javascript" language="javascript">
+            // <![CDATA[
+
+              var sliderAttraction = new Control.Slider('handleAttraction', 'trackAttraction', {
+                range: $R(0,6),
+                values: [0,1,2,3,4,5,6],
+                sliderValue: 0,
+                startSpan: 'sliderAttraction',
+                onSlide: function(v) { updateSliderAttraction(v); },
+                onChange: function(v) { updateSliderAttraction(v); }
+              });
+              
+              function updateSliderAttraction(value) {
+                switch(value){
+                  case 0:
+                  case 1:
+                  case 2:
+                    $('sliderAttraction').setStyle({
+                      backgroundColor: '#fd4d4e'
+                    });
+                    break;
+                  case 3:
+                  case 4:
+                    $('sliderAttraction').setStyle({
+                      backgroundColor: '#fc9325'
+                    });
+                    break;
+                  case 5:
+                  case 6:
+                    $('sliderAttraction').setStyle({
+                      backgroundColor: '#03b285'
+                    });
+                    break;
+                }
+                setAttraction(value, parseFloat($('avg_price').value));
+              }
+            // ]]>
+            </script>
+
+              <img src="<?php echo $this->getSkinUrl('images/prpayment/slider-attraction.png');?>" alt="PayRandom" width="100%" style="width: 100%; max-width: 350px;" />
+              <div id="visible_recalculate" style="position:absolute; bottom: 15px; right: 0px;">
+                <button style="width: 75px;" onclick="recalculate(10); " class="scalable" type="button" title="<?php echo $this->__('Recalcular');?>"><span><span><span><?php echo $this->__('Recalcular');?></span></span></span></button>
+              </div>
+		    		</div>
+		    		<div class="prpayment-design-element">
+		    			<table>
+		    				<tr>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 1</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 2</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 3</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 4</th>
+		    				</tr>
+		    				<tr>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal1" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[0], $_price), 2);?>" name="deal1" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal2" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[1], $_price), 2);?>" name="deal2" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal3" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[2], $_price), 2);?>" name="deal3" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal4" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[3], $_price), 2);?>" name="deal4" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    				</tr>
+		    				<tr>
+		    					<td id="result-deal-1" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-2" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-3" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-4" class="prpayment-design-deal-result">&nbsp;</td>
+		    				</tr>
+		    				<tr>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 5</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 6</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 7</th>
+		    					<th class="prpayment-design-deal-header"><?php echo $this->__('Precio');?> 8</th>
+		    				</tr>
+		    				<tr>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal5" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[4], $_price), 2);?>" name="deal5" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal6" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[5], $_price), 2);?>" name="deal6" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal7" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[6], $_price), 2);?>" name="deal7" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    					<td><input class="prpayment-design-deal required-entry validate-zero-or-greater" type="text" id="deal8" value="<?php echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_discounts[7], $_price), 2);?>" name="deal8" onchange="updateDiffDiscountsFromDeals(true);" onkeyup="updateDiffDiscountsFromDeals(true);" /></td>
+		    				</tr>
+		    				<tr>
+		    					<td id="result-deal-5" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-6" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-7" class="prpayment-design-deal-result">&nbsp;</td>
+		    					<td id="result-deal-8" class="prpayment-design-deal-result">&nbsp;</td>
+		    				</tr>
+		    			</table>
+		    			<span style="font-style: italic;"><?php echo $this->__('Escribe valor 0 si quieres poner el premio GRATIS');?></span>
+		    		</div>
+		    	</div>
+		    	<div class="prpayment-design-element">
+		    		<div class="prpayment-design-element">
+	    				<strong>3 . <?php echo $this->__('Precio fijo'); ?></strong>
+	    				<br/>
+	    				<table style="width: 100%">
+	    					<tr>
+	    						<td style="width: 30%">
+                  <input type="radio" id="noFixedPrice" name="radioFixedPrice" onchange="updateFixedPrice()" value="0" <?php if (is_null($_fixed_discount)) echo "checked";?> />
+	    							<label for="noFixedPrice"><?php echo $this->__('Sin precio fijo');?></label>
+	    						</td>
+                  <td style="width: 70%">
+	    							<input type="radio" id="fixedPrice" name="radioFixedPrice" onchange="updateFixedPrice()" value="1" <?php if (!is_null($_fixed_discount)) echo "checked";?> />
+                    <input class="validate-greater-than-zero" type="text" id="fixed_price" value="<?php if (!is_null($_fixed_discount)) echo round(PayRandom_PRPayment_Helper_Data::applyDiscount($_fixed_discount, $_price), 2);?>" name="fixed_price" style="width: 50%"/>
+                    <div class="hint" style="padding-left: 20px;"><?php echo $this->__('Fixed price hint');?></span>
+	    						</td>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    		</div>
+	    		<div class="prpayment-design-element">
+		    		<div class="prpayment-design-element">
+	    				<strong>4 . <?php echo $this->__('Icono de la oferta'); ?></strong>
+	    				<br/>
+	    				<table style="width: 100%">
+	    					<tr>
+	    						<td style="width: 30%">
+	    							<select name="view_format" id="dealIcon" onchange="updateExampleIcon()">
+	    								<option <?php if($_deal->view_format == ''){echo ' selected="selected" ';}?>value=""><?php echo $this->__('Ninguno');?></option>
+	    								<option <?php if($_deal->view_format == 'percentages'){echo ' selected="selected" ';}?>value="percentages"><?php echo $this->__('Porcentaje');?></option>
+	    								<option <?php if($_deal->view_format == 'prices'){echo ' selected="selected" ';}?>value="prices"><?php echo $this->__('Importe mínimo');?></option>
+	    							</select>
+	    						</td>
+	    						<td style="width: 70%">
+                    <?php if (file_exists(Mage::getBaseDir("media") . "/catalog/product" . $_product->getData('small_image'))): ?>
+                      <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150); ?>" width="150" height="150" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    <?php endif ?>
+	    							<img id="iconExample" src="" style="left: -84px; position: relative; top: 8px;" />
+	    						</td>
+	    					</tr>
+	    				</table>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="prpayment-design-box-right">
+	    		<div id="roulette">
+		    		<div class="prpayment-design-box-bottom">
+		    			<h2><?php echo $this->__('Los números de la ruleta');?>:</h2>
+		    			<table style="width: 100%;">
+		    				<tr>
+		    					<th width="33%"><?php echo $this->__('Precio medio');?></th>
+		    					<th width="33%"><?php echo $this->__('Equilibrio');?></th>
+		    					<th width="33%"><?php echo $this->__('Atracción');?></th>
+		    				</tr>
+		    				<tr>
+		    					<td><span id="lblAvgPrice"><?php echo $this->helper('checkout')->formatPrice($_price);?></span>€</td>
+		    					<td><span id="lblBalance"></span></td>
+                  <td>
+                    <span id="lblAttraction"></span>
+                    <span class="deal-attraction-medium deal-attraction" style="display:none;">
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_medium.png');?>" alt="PayRandom" />
+                    </span>
+                    <span class="deal-attraction-high deal-attraction" style="display:none;">
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_high.png');?>" alt="PayRandom" />
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_high.png');?>" alt="PayRandom" />
+                    </span>
+                    <span class="deal-attraction-very-high deal-attraction" style="display:none;">
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_very_high.png');?>" alt="PayRandom" />
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_very_high.png');?>" alt="PayRandom" />
+                      <img src="<?php echo $this->getSkinUrl('images/prpayment/attraction_very_high.png');?>" alt="PayRandom" />
+                    </span>
+                  </td>
+		    				</tr>
+		    			</table>
+		    		</div>
+		    		<div class="prpayment-design-box-bigimage">
+		    			<img id="roulette-img" style="width: 60%;" src="<?php echo PayRandom_PRPayment_Helper_Data_Api::getRouletteImg($_discounts, $_price, $this->__('Free'), 600, 600);?>" />
+		    		</div>
+		    	</div>
+		    	<div id="recalculate" style="display: none;" class="prpayment-design-recaluclate">
+		    		<button style="width: 50%; font-size: 4em;" onclick="recalculate(10); " class="scalable" type="button" title="<?php echo $this->__('Recalcular');?>"><span><span><span><?php echo $this->__('Recalcular');?></span></span></span></button>
+		    	</div>
+		    	<div id="prpayment-loading" style="display: none;" class="prpayment-design-loading">
+		    		<h2><?php echo $this->__('Generando la ruleta...');?></h2>
+		    	</div>
+	    	</div>
+	    	<div style="clear: both;"></div>
+	    </div>
+	    <input type="hidden" name="real_price" id="real_price" value="<?php echo $_price;?>" />
+	    <input type="hidden" name="deals_product_id" id="deals_product_id" value="<?php echo $_productId;?>" />
+		<input type="hidden" id="real_discount_1" name="discounts[]" value="1" />
+		<input type="hidden" id="real_discount_2" name="discounts[]" value="2" />
+		<input type="hidden" id="real_discount_3" name="discounts[]" value="3" />
+		<input type="hidden" id="real_discount_4" name="discounts[]" value="4" />
+		<input type="hidden" id="real_discount_5" name="discounts[]" value="5" />
+		<input type="hidden" id="real_discount_6" name="discounts[]" value="6" />
+		<input type="hidden" id="real_discount_7" name="discounts[]" value="7" />
+		<input type="hidden" id="real_discount_8" name="discounts[]" value="8" />
+	   </form>
+</div>
+<script type="text/javascript">
+//< ![CDATA[
+var jsTranslate = <?php echo json_encode(
+	array(
+		'freeText' => $this->__('Free'),
+		'upToText' => $this->__('Hasta'),
+    'fromText' => $this->__('Desde'),
+    'fromFreeText' => $this->__('Now')
+	)
+);?>;
+
+Validation.add("validate-fixed-price", "No valid", function (v) {
+  return parseFloat(v) >= parseFloat($('avg_price').value);
+});
+
+var designForm = new varienForm('form_design');
+<?php if($_deal->getId()) { ?>
+updateDiffDiscountsFromDeals(false);
+<?php } else { ?>
+setAttraction(0, parseFloat($('avg_price').value));
+<?php } ?>
+//]]>
+</script>

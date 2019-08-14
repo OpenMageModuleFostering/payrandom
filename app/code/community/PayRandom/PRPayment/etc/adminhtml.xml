@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<prpayment_menu translate="title" module="adminhtml">
+			<title>PayRandom</title>
+			<sort_order>150</sort_order>
+			<children>
+				<prpayment_menu_dashboard translate="title" module="adminhtml">
+					<title>Dashboard</title>
+					<action>*/info/index</action>
+				</prpayment_menu_dashboard>
+				<prpayment_menu_current translate="title" module="adminhtml">
+					<title>Productos PR en juego</title>
+					<action>*/info/currentDeals</action>
+				</prpayment_menu_current>
+				<prpayment_menu_sold translate="title" module="adminhtml">
+					<title>Productos PR vendidos</title>
+					<action>*/info/soldDeals</action>
+				</prpayment_menu_sold>
+				<prpayment_menu_roulettes translate="title" module="adminhtml">
+					<title>Ruletas predefinidas</title>
+					<action>*/info/predefinedDeals</action>
+				</prpayment_menu_roulettes>
+			</children> 
+		</prpayment_menu>
+	</menu>
+	 <acl>
+        <resources>
+            <admin>
+                <children>
+                    <prpayment_menu translate="title" module="adminhtml">
+                        <title>Pay Random</title>
+                        <sort_order>300</sort_order>
+                        <children>
+                            <prpayment_menu_dashboard  translate="title" module="adminhtml">
+						        <title>Dashboard</title>
+						        <sort_order>100</sort_order>
+						    </prpayment_menu_dashboard>
+						    <prpayment_menu_current  translate="title" module="adminhtml">
+						        <title>Productos PR en juego</title>
+						        <sort_order>100</sort_order>
+						    </prpayment_menu_current>
+						    <prpayment_menu_sold  translate="title" module="adminhtml">
+						        <title>Productos PR vendidos</title>
+						        <sort_order>100</sort_order>
+						    </prpayment_menu_sold>
+						    <prpayment_menu_roulettes  translate="title" module="adminhtml">
+						        <title>Ruletas predefinidas</title>
+						        <sort_order>100</sort_order>
+						    </prpayment_menu_roulettes>
+                        </children>
+                    </prpayment_menu>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

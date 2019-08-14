@@ -1,0 +1,107 @@
+.payrandom-information {
+    background-color: white;
+    border: 1px solid #3498d4;
+    border-radius: 6px;
+    padding: 0px;
+    color: #292929;
+    margin-bottom: 10px;
+}
+
+.payrandom-information .payrandom-information-img{
+    margin-left: 10px;
+    background-image: url(../../images/prpayment/information_excl.png);
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+
+.payrandom-information .payrandom-information-content{
+    padding: 10px 10px 10px 35px;
+}
+
+.payrandom-information .payrandom-information-content .payrandom-information-content-right {
+    float: right;
+}
+.payrandom-price-full {
+    margin-top: 5px;
+    border: 1px solid #eee;
+    box-shadow: 1px 1px 2px #eee;
+    background-color: white;
+    background-image: url(../../images/prpayment/lens.png);
+    background-position: 98% 5%;
+    background-repeat: no-repeat;
+}
+.payrandom-price-full .payrandom-price-full-left { width: 35%; float: left; padding: 20px 5px 10px 10px; }
+.payrandom-price-full .payrandom-price-full-right { padding-top: 20px; padding-right: 20px; width: 50%; float: right; }
+.payrandom-price-full .payrandom-price-full-left-header{ font-size: 1.2em; color: #565656; font-family: helvetica, arial, sans-serif;}
+.payrandom-price-full .payrandom-price-full-left-price{ font-weight: bold; font-size: 1.8em; color: #f18000; font-family: helvetica, arial, sans-serif;}
+
+
+.payrandom-price-full .payrandom-price-full-left .payrandom-price-full-left-howitworks{
+    color: #3498D4;
+    text-decoration: underline;
+}
+
+.payrandom-price-full .payrandom-price-full-bottom { clear: both; }
+
+.payrandom-price { margin-top: 5px;}
+.payrandom-price .payrandom-price-label { color: #cc4c2d; white-space:nowrap; font-weight:bold; }
+.payrandom-price .payrandom-price-element { color: #cc4c2d; float: right;}
+
+.payrandom-price-from-to { margin-top: 5px;}
+.payrandom-price-from-to .payrandom-price-from-to-label { color: #999; white-space:nowrap; }
+.payrandom-price-from-to .payrandom-price-from-to-element { color: #cc4c2d; font-weight:bold;}
+
+.payrandom-modalbox {
+	font-family: helvetica, arial, sans-serif;
+    position: fixed;
+    top: 30%;
+    width: 500px;
+    height: 340px;
+
+    border: 1px solid #3498d4;
+    border-top: 1px solid #3498d4;
+
+    background-color: #f7fbfe;
+    z-index:1002;
+    overflow: auto;
+
+    box-shadow: 1px 1px 5px #888;
+}
+
+.payrandom-modalbox img{
+	border: none !important;
+}
+.payrandom-modalbox .payrandom-modalbox-header {
+	padding: 10px 5px 10px 20px;
+    background-color: #3498d4;
+}
+
+
+.payrandom-modalbox .payrandom-modalbox-close {
+	float: right;
+}
+
+.payrandom-modalbox .payrandom-modalbox-content {
+    padding: 16px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.2em;
+    color: #5d5d5d;
+}
+
+.payrandom-modalbox .payrandom-modalbox-content .payrandom-modalbox-content-divimg {
+	float: left;
+	width: 250px;
+	margin-right: 10px;
+}
+
+.payrandom-modalbox .payrandom-modalbox-content .payrandom-modalbox-h2 {
+	color: #3397d2;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.payrandom-modalbox .payrandom-modalbox-content .payrandom-modalbox-howitworks{
+	color: #3498D4;
+}
+

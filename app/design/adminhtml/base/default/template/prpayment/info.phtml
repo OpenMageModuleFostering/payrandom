@@ -1,0 +1,10 @@
+<div class="content-header">
+    <h3 class="icon-head head-system-account">PayRandom - <?php echo $this->__('Account Information');?></h3>
+</div>
+<div class="entry-edit">
+	<?php /*<p><a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/system_config/edit', array('section'=>'payment'));?>"><?php echo $this->__('Configure extension');?></a></p>*/ ?>
+    
+    <div class="entry-edit" style="text-align: center;">
+    	<iframe src="<?php echo Mage::helper('prpayment/api')->getDashBoardUrl();?>" height="600" width="960" style="border: 0px;"></iframe>
+	</div>
+</div>

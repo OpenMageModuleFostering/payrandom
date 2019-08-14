@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout>
+	<default>
+		<reference name="head">
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>js/prpayment/adminprpayment.js</name>
+			</action>
+			<action method="addItem">
+				<type>skin_css</type>
+				<name>css/prpayment/adminprpayment.css</name>
+			</action>
+		</reference>
+	</default>
+</layout>

@@ -1,0 +1,8 @@
+<form name="prpaymentform" method="post" action="<?php echo Mage::helper('prpayment/api')->getOrdersUrl();?>">
+	<?php foreach($this->getParameters() as $name => $value){ ?>
+		<input type="hidden" name="<?php echo htmlentities($name);?>" value="<?php echo htmlentities($value);?>" />
+	<?php } ?>
+</form>
+<script type="text/javascript">
+	document.prpaymentform.submit();
+</script>

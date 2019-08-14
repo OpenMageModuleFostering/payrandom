@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<layout>
+	<default>
+		<reference name="head">
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>js/prpayment/prpayment.js</name>
+			</action>
+			<action method="addItem">
+				<type>skin_css</type>
+				<name>css/prpayment/prpayment.css</name>
+			</action>
+		</reference>
+	</default>
+
+	<catalog_category_default>
+		<reference name="product_list">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/list.phtml</template>
+			</action>
+		</reference>
+	</catalog_category_default>
+	<catalog_category_layered>
+		<reference name="product_list">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/list.phtml</template>
+			</action>
+		</reference>
+	</catalog_category_layered>
+	<catalogsearch_result_index>
+		<reference name="search_result_list">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/list.phtml</template>
+			</action>
+		</reference>
+	</catalogsearch_result_index>
+
+	<catalogsearch_advanced_result>
+		<reference name="search_result_list">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/list.phtml</template>
+			</action>
+		</reference>
+	</catalogsearch_advanced_result>
+	<PRODUCT_TYPE_simple>
+		<reference name="product.info.simple">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_simple>
+	<PRODUCT_TYPE_configurable>
+		<reference name="product.info.configurable">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_configurable>
+	<PRODUCT_TYPE_virtual>
+		<reference name="product.info.virtual">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/view/type/default.phtml</template>
+			</action>
+		</reference>
+	</PRODUCT_TYPE_virtual>
+	<catalog_product_view>
+		<reference name="product.info.addtocart">
+			<action method="setTemplate">
+				<template>prpayment/catalog/product/view/addtocart.phtml</template>
+			</action>
+		</reference>
+	</catalog_product_view>
+	<checkout_onepage_review>
+		<reference name="checkout.onepage.review.button">
+			<action method="setTemplate">
+				<template>prpayment/checkout/onepage/review/button.phtml</template>
+			</action>
+		</reference>
+	</checkout_onepage_review>
+	<!-- OneStepCheckout -->
+	<onestepcheckout_index_index>
+        <reference name="onestepcheckout.checkout">
+        	<action method="setTemplate">
+	            <template>prpayment/onestepcheckout/checkout.phtml</template>
+	        </action>
+        </reference>
+        <reference name="onestepcheckout.summary">
+        	<action method="setTemplate">
+	            <template>prpayment/onestepcheckout/summary.phtml</template>
+	        </action>
+        </reference>
+    </onestepcheckout_index_index>
+  	<onestepcheckout_ajax_add_extra_product>
+		<reference name="checkout.cart.totals">
+			<action method="setTemplate">
+				<template>prpayment/onestepcheckout/summary.phtml</template>
+			</action>
+		</reference>
+    </onestepcheckout_ajax_add_extra_product>
+    <onestepcheckout_ajax_set_methods_separate>
+		<reference name="onestepcheckout.summary">
+			<action method="setTemplate">
+				<template>prpayment/onestepcheckout/summary.phtml</template>
+			</action>
+		</reference>
+    </onestepcheckout_ajax_set_methods_separate>
+    <onestepcheckout_ajax_paymentrefresh>
+		<reference name="onestepcheckout.summary">
+			<action method="setTemplate">
+				<template>prpayment/onestepcheckout/summary.phtml</template>
+			</action>
+		</reference>
+    </onestepcheckout_ajax_paymentrefresh>
+    <onestepcheckout_ajax_save_billing>
+		<reference name="onestepcheckout.summary">
+			<action method="setTemplate">
+				<template>prpayment/onestepcheckout/summary.phtml</template>
+			</action>
+		</reference>
+    </onestepcheckout_ajax_save_billing>
+</layout>

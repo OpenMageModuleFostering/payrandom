@@ -1,0 +1,24 @@
+<?php /* @var $this Mage_Catalog_Block_Product_View_Abstract */?>
+<?php $_product = $this->getProduct() ?>
+
+<?php if ($_product->isAvailable()): ?>
+    <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+<?php else: ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Out of stock') ?></span></p>
+<?php endif; ?>
+<?php echo $this->getChildHtml('product_type_data_extra') ?>
+<?php
+	$productId = $_product->getId();
+	$productsCanApply = PayRandom_PRPayment_Helper_Data::idProductsDeal();
+    if(in_array($productId, $productsCanApply)){
+    	$block = $this->getLayout()->createBlock(
+				'Mage_Core_Block_Template',
+				'price_full',
+				array('template' => 'prpayment/price_full.phtml')
+		 );
+    	$block->setProduct($this->getProduct());
+    	echo $block->toHtml();
+    }else{
+    	echo $this->getPriceHtml($_product);
+    }
+?>

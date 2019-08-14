@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/PayRandom",
+    "type": "magento-module",
+    "license": "PayRandom-EULA",
+    "homepage": "",
+    "description": "PayRandom is a gamified payment method including a price roulette which determines by random the price to pay.",
+    "authors": [
+    {
+        "name": "PayRandom",
+        "email": "it@payrandom.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

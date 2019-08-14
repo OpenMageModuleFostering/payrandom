@@ -1,0 +1,7 @@
+<?php
+	$buttonText = $this->__('Place Order');
+	if(PayRandom_PRPayment_Helper_Data::checkCartCanApplyOffer()){
+		$buttonText = $this->__('Compra y Juega');
+	}
+?>
+<button type="submit" title="<?php echo $this->__('Place Order') ?>" class="button btn-checkout" onclick="review.save();"><span><span><?php echo $buttonText ?></span></span></button>

@@ -1,0 +1,90 @@
+<?php
+    $_coreHelper = $this->helper('core');
+    $_weeeHelper = $this->helper('weee');
+    $_taxHelper  = $this->helper('tax');
+    /* @var $_coreHelper Mage_Core_Helper_Data */
+    /* @var $_weeeHelper Mage_Weee_Helper_Data */
+    /* @var $_taxHelper Mage_Tax_Helper_Data */
+
+    $_product = $this->getProduct();
+    $_storeId = $_product->getStoreId();
+    $_id = $_product->getId();
+    $_weeeSeparator = '';
+    $_simplePricesTax = ($_taxHelper->displayPriceIncludingTax() || $_taxHelper->displayBothPrices());
+    $_minimalPriceValue = $_product->getMinimalPrice();
+    $_minimalPrice = $_taxHelper->getPrice($_product, $_minimalPriceValue, $_simplePricesTax);
+?>
+<?php $_price = $_taxHelper->getPrice($_product, $_product->getPrice()) ?>
+<?php $_regularPrice = $_taxHelper->getPrice($_product, $_product->getPrice(), $_simplePricesTax) ?>
+<p class="old-price">
+    <span class="price-label"><?php echo $this->__('Regular Price:') ?></span>
+    <span class="price" id="old-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+        <?php echo $_coreHelper->currency($_regularPrice, true, false) ?>
+    </span>
+</p>
+<p class="payrandom-price">
+    <span class="payrandom-price-label"><?php echo $this->__('Precio PayRandom') ?></span>
+    <a href="#" class="payrandom-price-element" id="payrandom-price-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>" onclick="prPaymentOpenHelp(<?php echo $_id ?>); return false;">
+        <img src="<?php echo $this->getSkinUrl('images/prpayment/help.png');?>" alt="PayRandom"  />
+    </a>
+</p>
+<?php
+	$dealProduct = Mage::getModel('prpayment/dealproduct')->loadByProductId($_id);
+	$deal = Mage::getModel('prpayment/deal')->load($dealProduct->getDealId());
+
+	$_fromPrice = (1 - $deal->getMaximumDiscount()) * $_price;
+	$_toPrice = (1 - $deal->getMinimumDiscount()) * $_price;
+    $_discounts = json_decode($deal->getDiscounts(), true);
+
+	if($_fromPrice == 0){
+		$_fromPriceText = Mage::helper('prpayment')->__('Free');
+	}else{
+		$_fromPriceText = $this->helper('checkout')->formatPrice($_fromPrice);
+	}
+
+	if($_toPrice == 0){
+		$_toPriceText = Mage::helper('prpayment')->__('Free');
+	}else{
+		$_toPriceText = $this->helper('checkout')->formatPrice($_toPrice);
+	}
+?>
+<p class="payrandom-price-from-to">
+    <span class="payrandom-price-from-to-label"><?php echo $this->__('From') ?></span>
+    <span class="payrandom-price-from-to-element" id="payrandom-price-from-to-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+    	<?php echo $_fromPriceText; ?>
+    </span>
+    <br/>
+    <span class="payrandom-price-from-to-label"><?php echo $this->__('to') ?></span>
+    <span class="payrandom-price-from-to-element" id="payrandom-price-from-to-<?php echo $_id ?><?php echo $this->getIdSuffix() ?>">
+        <?php echo $_toPriceText; ?>
+    </span>
+</p>
+<div id="payrandom-modalbox-info-<?php echo $_id ?>" class="payrandom-modalbox" style="display:none;">
+    <div class="payrandom-modalbox-header">
+        <img src="<?php echo $this->getSkinUrl('images/prpayment/logo_pr_white_small.png');?>" alt="PayRandom" />
+        <a href="#" onclick="prPaymentCloseHelp(<?php echo $_id;?>); return false;" id="payrandom-modalbox-close" class="payrandom-modalbox-close"><img src="<?php echo $this->getSkinUrl('images/prpayment/modalbox/close.png');?>" alt="close" /></a>
+    </div>
+    <div class="payrandom-modalbox-content">
+        <div id="payrandom-maincontent-<?php echo $_id;?>" class="payrandom-modalbox-content-maincontent">
+            <div class="payrandom-modalbox-content-divimg">
+                <img src="<?php echo PayRandom_PRPayment_Helper_Data_Api::getRouletteImg($_discounts, $_price, $this->__('Free'), 250, 250);?>" alt="Roulette" />
+            </div>
+
+            <h2 class="payrandom-modalbox-h2"><?php echo $this->__('Compra y juega con PayRandom') ?></h2>
+            <p><?php echo $this->__('¡Consigue este producto por uno de los precios que vés en la ruleta!') ?></p>
+            <p><span class="payrandom-modalbox-howitworks"><?php echo $this->__('Cómo funciona') ?>:</span></p>
+            <a href="#" onclick="$('payrandom-maincontent-<?php echo $_id;?>').hide();$('payrandom-video-<?php echo $_id;?>').show(); return false;" target="_blank"><img src="<?php echo $this->getSkinUrl('images/prpayment/modalbox/video.png');?>" alt="help" /></a>
+        </div>
+        <div id="payrandom-video-<?php echo $_id;?>" class="payrandom-modalbox-content-video" style="display: none;">
+            <iframe id="how-it-works" src="//player.vimeo.com/video/91405153" width="465" height="260" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    document.observe('dom:loaded', function() { 
+      $("payrandom-modalbox-close").on("click", function (e) {
+        $('how-it-works').setAttribute('src','');
+        $('how-it-works').setAttribute('src','//player.vimeo.com/video/91405153');
+      });
+    });
+</script>
